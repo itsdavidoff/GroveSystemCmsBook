@@ -13,12 +13,51 @@ import Link from "next/link";
 import { getLink } from "@/lib/getLink";
 import { upsertSite } from "@/lib/actions/page";
 import { useDebounce } from "@/hooks/use-debounce";
+import { useHotkeys } from "@/hooks/use-hotkeys";
 
 type Props = { siteId: string; liveMode?: boolean };
 
 function SiteEditor({ siteId, liveMode }: Props) {
   const { state, dispatch } = useEditor();
   const isMobile = useIsMobile();
+
+  // Keyboard Shortcuts
+  useHotkeys({
+    "ctrl+z": () => dispatch({ type: "UNDO" }),
+    "ctrl+y": () => dispatch({ type: "REDO" }),
+    "ctrl+shift+z": () => dispatch({ type: "REDO" }),
+    "ctrl+d": () => {
+      if (state.editor.selectedElement.id) {
+        dispatch({
+          type: "DUPLICATE_ELEMENT",
+          payload: { elementDetails: state.editor.selectedElement },
+        });
+      }
+    },
+    "delete": () => {
+      if (state.editor.selectedElement.id && state.editor.selectedElement.type !== "__body") {
+        dispatch({
+          type: "DELETE_ELEMENT",
+          payload: { elementDetails: state.editor.selectedElement },
+        });
+      }
+    },
+    "backspace": () => {
+      // Only delete if not typing in a text field
+      if (
+        state.editor.selectedElement.id && 
+        state.editor.selectedElement.type !== "__body" &&
+        document.activeElement?.tagName !== "INPUT" &&
+        document.activeElement?.tagName !== "TEXTAREA" &&
+        !(document.activeElement as HTMLElement)?.isContentEditable
+      ) {
+        dispatch({
+          type: "DELETE_ELEMENT",
+          payload: { elementDetails: state.editor.selectedElement },
+        });
+      }
+    },
+  });
 
   // Debounce the editor state to trigger auto-save
   const debouncedEditorState = useDebounce(state.editor.elements, 3000);
