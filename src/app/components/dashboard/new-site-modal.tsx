@@ -110,7 +110,7 @@ export default function NewPageModal() {
                         className="rounded-r-none focus-visible:ring-0 focus-visible:ring-offset-0"
                       />
                       <div className="inline-flex items-center px-3 text-sm border border-l-0 rounded-r-md border-input bg-muted text-muted-foreground">
-                        .framely.site
+                        .{process.env.NEXT_PUBLIC_ROOT_DOMAIN || "vercel.app"}
                       </div>
                     </div>
                   </FormControl>
