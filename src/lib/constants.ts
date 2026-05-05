@@ -18,6 +18,7 @@ export type ElementTypes =
   | "hero"
   | "pricing"
   | "faq"
+  | "contactForm"
   | "__body"
   | null;
 

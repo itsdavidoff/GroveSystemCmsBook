@@ -488,6 +488,78 @@ function Container({ element }: Props) {
           },
         });
         break;
+      case "contactForm":
+        dispatch({
+          type: "ADD_ELEMENT",
+          payload: {
+            containerId: id,
+            elementDetails: {
+              content: [
+                {
+                  content: { innerText: "Get in Touch" },
+                  id: createId(),
+                  name: "Form Title",
+                  styles: { ...defaultStyles, fontSize: "2rem", fontWeight: "bold", marginBottom: "1rem", textAlign: "center", width: "100%" },
+                  type: "h2",
+                  category: "Text",
+                },
+                {
+                  content: { innerText: "We'd love to hear from you. Please fill out the form below." },
+                  id: createId(),
+                  name: "Form Subtitle",
+                  styles: { ...defaultStyles, color: "#666", marginBottom: "2rem", textAlign: "center", width: "100%" },
+                  type: "p",
+                  category: "Text",
+                },
+                {
+                  content: [
+                    {
+                      content: [
+                        { content: { innerText: "Name" }, id: createId(), name: "Label", styles: { fontSize: "0.8rem", fontWeight: "bold", marginBottom: "0.4rem" }, type: "p", category: "Text" },
+                        { content: { innerText: "Your Name" }, id: createId(), name: "Input Placeholder", styles: { padding: "10px", border: "1px solid #ddd", borderRadius: "6px", width: "100%", backgroundColor: "#fff" }, type: "p", category: "Text" },
+                      ],
+                      id: createId(),
+                      name: "Input Group",
+                      styles: { ...defaultStyles, marginBottom: "1rem", width: "100%" },
+                      type: "container",
+                      category: "Container",
+                    },
+                    {
+                      content: [
+                        { content: { innerText: "Email" }, id: createId(), name: "Label", styles: { fontSize: "0.8rem", fontWeight: "bold", marginBottom: "0.4rem" }, type: "p", category: "Text" },
+                        { content: { innerText: "hello@example.com" }, id: createId(), name: "Input Placeholder", styles: { padding: "10px", border: "1px solid #ddd", borderRadius: "6px", width: "100%", backgroundColor: "#fff" }, type: "p", category: "Text" },
+                      ],
+                      id: createId(),
+                      name: "Input Group",
+                      styles: { ...defaultStyles, marginBottom: "1rem", width: "100%" },
+                      type: "container",
+                      category: "Container",
+                    },
+                    {
+                      content: { innerText: "Send Message" },
+                      id: createId(),
+                      name: "Submit Button",
+                      styles: { ...defaultStyles, backgroundColor: "black", color: "white", padding: "12px", borderRadius: "6px", textAlign: "center", width: "100%", fontWeight: "bold", cursor: "pointer" },
+                      type: "p",
+                      category: "Text",
+                    },
+                  ],
+                  id: createId(),
+                  name: "Form Container",
+                  styles: { ...defaultStyles, width: "100%", maxWidth: "500px", padding: "30px", backgroundColor: "#f9f9f9", borderRadius: "12px", border: "1px solid #eee" },
+                  type: "container",
+                  category: "Container",
+                }
+              ],
+              id: createId(),
+              name: "Contact Section",
+              styles: { ...defaultStyles, padding: "80px 20px", display: "flex", flexDirection: "column", alignItems: "center", width: "100%" },
+              type: "container",
+              category: "Container",
+            },
+          },
+        });
+        break;
     }
   };
 

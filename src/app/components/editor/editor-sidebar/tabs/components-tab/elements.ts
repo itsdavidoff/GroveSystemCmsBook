@@ -142,4 +142,11 @@ export const elements: {
     category: "Basic",
     icon: SquareDashed,
   },
+  {
+    label: "Contact Form",
+    id: "contactForm",
+    group: "element",
+    category: "Basic",
+    icon: SquareDashed,
+  },
 ];
