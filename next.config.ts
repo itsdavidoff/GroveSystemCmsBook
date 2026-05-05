@@ -1,16 +1,16 @@
-/** @type {import type { NextConfig } from "next"} */
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**", // Allows images from any domain
+        hostname: "**",
       },
       {
         protocol: "http",
-        hostname: "**", // Also allow HTTP images (optional)
+        hostname: "**",
       },
     ],
   },
@@ -19,6 +19,13 @@ const nextConfig: NextConfig = {
   },
   eslint: {
     ignoreDuringBuilds: true,
+  },
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@": path.resolve(__dirname, "src"),
+    };
+    return config;
   },
 };
 

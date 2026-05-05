@@ -1,10 +1,10 @@
 "use client";
 import { upsertSite } from "@/lib/actions/page";
 import { DeviceTypes, useEditor } from "@/app/providers/editor-provider";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "../../../components/ui/button";
+import { Input } from "../../../components/ui/input";
+import { Switch } from "../../../components/ui/switch";
+import { Tabs, TabsList, TabsTrigger } from "../../../components/ui/tabs";
 import { Page } from "@prisma/client";
 import {
   ArrowUpRightFromSquare,
