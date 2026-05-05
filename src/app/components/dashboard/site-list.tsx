@@ -6,10 +6,16 @@ import PageItem from "./site-item";
 
 async function SiteList() {
   const { userId } = await auth();
-  const sites = await db.page.findMany({
-    where: { userId: userId || "" },
-    orderBy: { updatedAt: "desc" },
-  });
+  
+  let sites = [];
+  try {
+    sites = await (db as any).site.findMany({
+      where: { userId: userId || "" },
+      orderBy: { updatedAt: "desc" },
+    });
+  } catch (error) {
+    console.error("Failed to fetch sites:", error);
+  }
 
   return (
     <div className="w-full p-6">
@@ -22,12 +28,14 @@ async function SiteList() {
           </div>
 
           <div className="grid grid-cols-1 gap-4">
-            {sites.length >= 1 ? (
-              sites.map((site) => <PageItem key={site.id} site={site} />)
+            {sites && sites.length >= 1 ? (
+              sites.map((site: any) => <PageItem key={site.id} site={site} />)
             ) : (
-              <p className="mt-4 text-center text-muted-foreground">
-                It&apos;s pretty empty in here, create a site to get started.
-              </p>
+              <div className="flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-xl">
+                <p className="text-muted-foreground text-center">
+                  No sites found. Create your first project to get started!
+                </p>
+              </div>
             )}
           </div>
         </div>

@@ -13,9 +13,10 @@ import {
 } from "@/components/ui/sidebar";
 import { Tabs, TabsContent } from "@radix-ui/react-tabs";
 import ComponentsTab from "./tabs/components-tab";
-import { Layers, PlusIcon, SidebarOpenIcon } from "lucide-react";
+import { Layers, PlusIcon, SidebarOpenIcon, FileText } from "lucide-react";
 import TabList from "./tabs/index";
 import LayersTab from "./tabs/layers-tab";
+import PagesTab from "./tabs/pages-tab";
 
 const LeftSidebar = () => {
   const { state } = useEditor();
@@ -38,6 +39,10 @@ const LeftSidebar = () => {
                   value: "layers",
                   icon: <Layers className="w-4 h-4" />,
                 },
+                {
+                  value: "pages",
+                  icon: <FileText className="w-4 h-4" />,
+                },
               ]}
             />
           </SidebarGroup>
@@ -58,6 +63,12 @@ const LeftSidebar = () => {
               <SidebarGroupLabel>Layers</SidebarGroupLabel>
               <SidebarGroupContent className="p-0 max-h-[calc(100vh-95px)] overflow-y-auto">
                 <LayersTab />
+              </SidebarGroupContent>
+            </TabsContent>
+            <TabsContent value="pages">
+              <SidebarGroupLabel>Pages</SidebarGroupLabel>
+              <SidebarGroupContent className="p-0 max-h-[calc(100vh-95px)] overflow-y-auto">
+                <PagesTab />
               </SidebarGroupContent>
             </TabsContent>
           </SidebarGroup>
