@@ -11,12 +11,17 @@ import Recursive from "./editor-components/recursive";
 import { useIsMobile } from "@/hooks/use-mobile";
 import Link from "next/link";
 import { getLink } from "@/lib/getLink";
+import { upsertSite } from "@/lib/actions/page";
+import { useDebounce } from "@/hooks/use-debounce";
 
 type Props = { siteId: string; liveMode?: boolean };
 
 function SiteEditor({ siteId, liveMode }: Props) {
   const { state, dispatch } = useEditor();
   const isMobile = useIsMobile();
+
+  // Debounce the editor state to trigger auto-save
+  const debouncedEditorState = useDebounce(state.editor.elements, 3000);
 
   useEffect(() => {
     if (liveMode) {
@@ -26,6 +31,31 @@ function SiteEditor({ siteId, liveMode }: Props) {
       });
     }
   }, [liveMode, dispatch]);
+
+  // Auto-save effect
+  useEffect(() => {
+    const handleAutoSave = async () => {
+      if (liveMode || state.editor.previewMode || !debouncedEditorState.length) return;
+      
+      try {
+        const response = await upsertSite({
+          id: siteId,
+          content: JSON.stringify(debouncedEditorState),
+        });
+        
+        if (response.success) {
+          toast.success("Saved", { 
+            description: "Changes saved automatically",
+            duration: 1000 
+          });
+        }
+      } catch (error) {
+        console.error("Auto-save failed", error);
+      }
+    };
+
+    handleAutoSave();
+  }, [debouncedEditorState, siteId, liveMode, state.editor.previewMode]);
 
   useEffect(() => {
     const fetchData = async () => {
