@@ -17,6 +17,7 @@ export type ElementTypes =
   | "navbar"
   | "hero"
   | "pricing"
+  | "faq"
   | "__body"
   | null;
 

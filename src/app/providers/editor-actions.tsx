@@ -21,6 +21,12 @@ export type EditorAction =
       };
     }
   | {
+      type: "DUPLICATE_ELEMENT";
+      payload: {
+        elementDetails: EditorElement;
+      };
+    }
+  | {
       type: "CHANGE_SELECTED_ELEMENT";
       payload: {
         elementDetails?:

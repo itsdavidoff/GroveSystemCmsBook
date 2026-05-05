@@ -135,4 +135,11 @@ export const elements: {
     category: "Basic",
     icon: SquareDashed,
   },
+  {
+    label: "FAQ Section",
+    id: "faq",
+    group: "element",
+    category: "Basic",
+    icon: SquareDashed,
+  },
 ];

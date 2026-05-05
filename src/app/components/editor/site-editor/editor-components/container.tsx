@@ -432,6 +432,62 @@ function Container({ element }: Props) {
           },
         });
         break;
+      case "faq":
+        dispatch({
+          type: "ADD_ELEMENT",
+          payload: {
+            containerId: id,
+            elementDetails: {
+              content: [
+                {
+                  content: { innerText: "Frequently Asked Questions" },
+                  id: createId(),
+                  name: "FAQ Title",
+                  styles: { ...defaultStyles, fontSize: "2rem", fontWeight: "bold", marginBottom: "2rem", textAlign: "center", width: "100%" },
+                  type: "h2",
+                  category: "Text",
+                },
+                {
+                  content: [
+                    {
+                      content: [
+                        { content: { innerText: "What is Framely?" }, id: createId(), name: "Question", styles: { fontWeight: "bold", marginBottom: "0.5rem" }, type: "p", category: "Text" },
+                        { content: { innerText: "Framely is the most powerful no-code website builder for modern teams." }, id: createId(), name: "Answer", styles: { color: "#666" }, type: "p", category: "Text" },
+                      ],
+                      id: createId(),
+                      name: "FAQ Item",
+                      styles: { ...defaultStyles, padding: "20px", borderBottom: "1px solid #eee", width: "100%" },
+                      type: "container",
+                      category: "Container",
+                    },
+                    {
+                      content: [
+                        { content: { innerText: "How does it work?" }, id: createId(), name: "Question", styles: { fontWeight: "bold", marginBottom: "0.5rem" }, type: "p", category: "Text" },
+                        { content: { innerText: "Simply drag and drop elements, customize them, and hit publish!" }, id: createId(), name: "Answer", styles: { color: "#666" }, type: "p", category: "Text" },
+                      ],
+                      id: createId(),
+                      name: "FAQ Item",
+                      styles: { ...defaultStyles, padding: "20px", borderBottom: "1px solid #eee", width: "100%" },
+                      type: "container",
+                      category: "Container",
+                    },
+                  ],
+                  id: createId(),
+                  name: "FAQ List",
+                  styles: { ...defaultStyles, width: "100%", maxWidth: "800px" },
+                  type: "container",
+                  category: "Container",
+                }
+              ],
+              id: createId(),
+              name: "FAQ Section",
+              styles: { ...defaultStyles, padding: "60px 20px", display: "flex", flexDirection: "column", alignItems: "center", width: "100%", backgroundColor: "white" },
+              type: "container",
+              category: "Container",
+            },
+          },
+        });
+        break;
     }
   };
 

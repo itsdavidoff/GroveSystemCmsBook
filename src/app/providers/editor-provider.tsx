@@ -3,6 +3,7 @@ import { Dispatch, createContext, useContext, useReducer } from "react";
 import { CategoryTypes, ElementTypes } from "../../lib/constants";
 import { EditorAction } from "./editor-actions";
 import { Page } from "@prisma/client";
+import { createId } from "@paralleldrive/cuid2";
 
 export type DeviceTypes = "Desktop" | "Tablet" | "Mobile";
 
@@ -147,6 +148,40 @@ const deleteElement = (
   });
 };
 
+const duplicateElement = (
+  editorArray: EditorElement[],
+  action: EditorAction
+): EditorElement[] => {
+  if (action.type !== "DUPLICATE_ELEMENT") {
+    throw Error("Wrong action type received to duplicate an element.");
+  }
+
+  // Recursive function to generate new IDs for all children
+  const cloneWithNewId = (element: EditorElement): EditorElement => {
+    const newId = createId();
+    return {
+      ...element,
+      id: newId,
+      content: Array.isArray(element.content)
+        ? element.content.map((child) => cloneWithNewId(child))
+        : { ...element.content },
+    };
+  };
+
+  const newEditorArray: EditorElement[] = [];
+
+  for (const item of editorArray) {
+    newEditorArray.push(item);
+    if (item.id === action.payload.elementDetails.id) {
+      newEditorArray.push(cloneWithNewId(item));
+    } else if (item.content && Array.isArray(item.content)) {
+      item.content = duplicateElement(item.content, action);
+    }
+  }
+
+  return newEditorArray;
+};
+
 const editorReducer = (
   state: EditorState = initialState,
   action: EditorAction
@@ -247,6 +282,29 @@ const editorReducer = (
       };
 
       return deletedState;
+
+    case "DUPLICATE_ELEMENT":
+      const duplicatedElements = duplicateElement(state.editor.elements, action);
+
+      const duplicatedEditorState = {
+        ...state.editor,
+        elements: duplicatedElements,
+      };
+
+      const updatedHistoryAfterDuplicate = [
+        ...state.history.history.slice(0, state.history.currentIndex + 1),
+        { ...duplicatedEditorState },
+      ];
+
+      return {
+        ...state,
+        editor: duplicatedEditorState,
+        history: {
+          ...state.history,
+          history: updatedHistoryAfterDuplicate,
+          currentIndex: updatedHistoryAfterDuplicate.length - 1,
+        },
+      };
 
     case "CHANGE_SELECTED_ELEMENT":
       const clickedState = {
