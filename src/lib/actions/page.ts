@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { Page } from "@prisma/client";
+import { Page, Site } from "@prisma/client";
 import { revalidateTag, unstable_cache } from "next/cache";
 
 type SiteProps = {
@@ -15,7 +15,7 @@ export async function createSite({ title, subdomain }: SiteProps) {
 
   if (!userId) return { success: false, msg: "User not signed in" };
 
-  const existingSite = await db.page.findFirst({
+  const existingSite = await (db as any).site.findFirst({
     where: { subdomain: subdomain },
   });
 
@@ -24,8 +24,19 @@ export async function createSite({ title, subdomain }: SiteProps) {
   }
 
   try {
-    const site = await db.page.create({
-      data: { userId: userId, title: title, subdomain: subdomain },
+    const site = await (db as any).site.create({
+      data: {
+        userId: userId,
+        title: title,
+        subdomain: subdomain,
+        pages: {
+          create: {
+            title: "Home",
+            slug: "index",
+            content: "[]",
+          },
+        },
+      },
     });
     return { success: true, site: site };
   } catch (error) {
@@ -36,14 +47,12 @@ export async function createSite({ title, subdomain }: SiteProps) {
   }
 }
 
-type UpsertProps = Partial<Page>;
-
-export async function updateSite(siteId: string, data: Partial<Page>) {
+export async function updateSite(siteId: string, data: Partial<Site>) {
   const { userId } = await auth();
   if (!userId) return { success: false, msg: "User not signed in" };
 
   try {
-    const site = await db.page.update({
+    const site = await db.site.update({
       where: { id: siteId, userId: userId },
       data: {
         title: data.title,
@@ -63,33 +72,33 @@ export async function updateSite(siteId: string, data: Partial<Page>) {
   }
 }
 
-export async function upsertSite({
+export async function upsertPage({
   id,
   title,
-  subdomain,
-  previewImage,
+  slug,
   content,
-  visible,
-}: UpsertProps) {
+}: {
+  id: string;
+  title?: string;
+  slug?: string;
+  content?: string;
+}) {
   const { userId } = await auth();
-
   if (!userId) return { success: false, msg: "User not signed in" };
 
   try {
-    const site = await db.page.update({
-      where: { id: id, userId: userId },
+    const page = await db.page.update({
+      where: { id: id },
       data: {
         title: title,
-        subdomain: subdomain,
-        previewImage: previewImage,
+        slug: slug,
         content: content,
-        visible: visible,
       },
+      include: { site: true },
     });
 
-    revalidateTag(site.subdomain);
-
-    return { success: true, site: site };
+    revalidateTag(page.site.subdomain);
+    return { success: true, page };
   } catch (error) {
     return {
       success: false,
@@ -104,7 +113,7 @@ export async function deleteSite(siteId: string) {
   if (!userId) return { success: false, msg: "User not signed in" };
 
   try {
-    const response = await db.page.delete({
+    const response = await db.site.delete({
       where: {
         id: siteId,
         userId: userId,
@@ -122,13 +131,46 @@ export async function deleteSite(siteId: string) {
   }
 }
 
-export async function getSiteDetails(siteId: string) {
+export async function getPageDetails(pageId: string) {
   try {
-    const res = await db.page.findUnique({ where: { id: siteId } });
+    const res = await db.page.findUnique({
+      where: { id: pageId },
+      include: { site: true },
+    });
     if (!res) {
-      throw new Error("Database Error");
+      throw new Error("Page not found");
     }
-    return { success: true, content: res.content };
+    return { success: true, content: res.content, page: res };
+  } catch (error) {
+    return {
+      success: false,
+      msg: error instanceof Error ? error.message : "An unknown error occurred",
+    };
+  }
+}
+
+export async function createPage({
+  siteId,
+  title,
+  slug,
+}: {
+  siteId: string;
+  title: string;
+  slug: string;
+}) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, msg: "User not signed in" };
+
+  try {
+    const page = await db.page.create({
+      data: {
+        siteId,
+        title,
+        slug,
+        content: "[]",
+      },
+    });
+    return { success: true, page };
   } catch (error) {
     return {
       success: false,
@@ -141,9 +183,16 @@ export const getSiteByDomain = async (subdomainName: string) => {
   try {
     const response = await unstable_cache(
       async () => {
-        const response = await db.page.findUnique({
+        const response = await db.site.findUnique({
           where: {
             subdomain: subdomainName,
+          },
+          include: {
+            pages: {
+              where: {
+                slug: "index",
+              },
+            },
           },
         });
 
