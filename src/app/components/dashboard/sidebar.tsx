@@ -38,10 +38,10 @@ import {
 import { useTheme } from "next-themes";
 
 const items = [
-  { title: "Overview", url: "#", icon: LayoutDashboard },
-  { title: "Sites", url: "#", icon: Globe },
-  { title: "Analytics", url: "#", icon: ChartLine },
-  { title: "Settings", url: "#", icon: Settings },
+  { title: "Overview", url: "/dashboard", icon: LayoutDashboard },
+  { title: "Sites", url: "/dashboard", icon: Globe },
+  { title: "Analytics", url: "/dashboard", icon: ChartLine },
+  { title: "Settings", url: "/dashboard", icon: Settings },
 ];
 
 const externalLinks = [

@@ -79,8 +79,11 @@ function PageItem({ site }: { site: Page }) {
               rel="noopener noreferrer"
               className="group-hover:text-primary"
             >
-              {site.subdomain}.framely.site
+              <Globe className="w-3 h-3" />
             </Link>
+            <p className="text-xs text-muted-foreground">
+              {site.subdomain}.{process.env.NEXT_PUBLIC_ROOT_DOMAIN || "vercel.app"}
+            </p>
           </div>
           <div className="flex items-center gap-2">
             <Clock className="flex-shrink-0 w-4 h-4 mt-1" />

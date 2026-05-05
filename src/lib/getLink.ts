@@ -12,8 +12,20 @@ export function getLink({
     throw new Error("NEXT_PUBLIC_ROOT_DOMAIN is not defined");
   }
 
-  const formattedSubdomain = subdomain ? `${subdomain}.` : "";
   const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  const base = method ? `${protocol}://${rootDomain}` : rootDomain;
 
-  return `${method ? protocol + "://" : ""}${formattedSubdomain}${rootDomain}/${pathName}`;
+  // Handle editor separately for Vercel Hobby compatibility
+  if (subdomain === "editor") {
+    return `${base}/editor/${pathName}`;
+  }
+
+  // Handle other subdomains
+  if (subdomain) {
+    return method 
+      ? `${protocol}://${subdomain}.${rootDomain}/${pathName}`
+      : `${subdomain}.${rootDomain}/${pathName}`;
+  }
+
+  return `${base}/${pathName}`;
 }
