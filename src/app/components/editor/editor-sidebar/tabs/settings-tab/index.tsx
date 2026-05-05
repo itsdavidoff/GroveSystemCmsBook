@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import TransformSettings from "./transform-settings";
 import StrokeSettings from "./stroke-settings";
 import ThemeSettings from "./theme-settings";
+import SEOSettings from "./seo-settings";
 import { ImageUpload } from "./image-upload";
 import { categoriesWithCustomSettings } from "@/lib/constants";
 
@@ -86,6 +87,7 @@ const SettingsTab = () => {
         defaultValue={[
           "Theme",
           "Custom",
+          "SEO",
           "Transform",
           "Appearance",
           "Typography",
@@ -93,6 +95,7 @@ const SettingsTab = () => {
         ]}
       >
         <ThemeSettings />
+        <SEOSettings />
         <AccordionItem
           value="Custom"
           className="px-2 py-0"
