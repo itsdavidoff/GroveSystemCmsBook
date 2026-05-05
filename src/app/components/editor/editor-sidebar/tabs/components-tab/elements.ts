@@ -149,4 +149,18 @@ export const elements: {
     category: "Basic",
     icon: SquareDashed,
   },
+  {
+    label: "Testimonials",
+    id: "testimonials",
+    group: "element",
+    category: "Basic",
+    icon: SquareDashed,
+  },
+  {
+    label: "Footer",
+    id: "footer",
+    group: "element",
+    category: "Basic",
+    icon: SquareDashed,
+  },
 ];

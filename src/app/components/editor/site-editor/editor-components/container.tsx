@@ -560,6 +560,120 @@ function Container({ element }: Props) {
           },
         });
         break;
+      case "testimonials":
+        dispatch({
+          type: "ADD_ELEMENT",
+          payload: {
+            containerId: id,
+            elementDetails: {
+              content: [
+                {
+                  content: { innerText: "What our customers say" },
+                  id: createId(),
+                  name: "Title",
+                  styles: { ...defaultStyles, fontSize: "2.5rem", fontWeight: "bold", marginBottom: "3rem", textAlign: "center", width: "100%" },
+                  type: "h2",
+                  category: "Text",
+                },
+                {
+                  content: [
+                    {
+                      content: [
+                        { content: { innerText: "★★★★★" }, id: createId(), name: "Stars", styles: { color: "#ffc107", marginBottom: "1rem" }, type: "p", category: "Text" },
+                        { content: { innerText: "This editor changed my life. Building sites is now fun!" }, id: createId(), name: "Quote", styles: { fontStyle: "italic", marginBottom: "1.5rem" }, type: "p", category: "Text" },
+                        { content: { innerText: "John Doe, Designer" }, id: createId(), name: "Author", styles: { fontWeight: "bold", fontSize: "0.9rem" }, type: "p", category: "Text" },
+                      ],
+                      id: createId(),
+                      name: "Review Card",
+                      styles: { ...defaultStyles, padding: "30px", backgroundColor: "white", borderRadius: "16px", border: "1px solid #eee", flex: "1", margin: "0 10px" },
+                      type: "container",
+                      category: "Container",
+                    },
+                    {
+                      content: [
+                        { content: { innerText: "★★★★★" }, id: createId(), name: "Stars", styles: { color: "#ffc107", marginBottom: "1rem" }, type: "p", category: "Text" },
+                        { content: { innerText: "Finally a tool that understands what we need as developers." }, id: createId(), name: "Quote", styles: { fontStyle: "italic", marginBottom: "1.5rem" }, type: "p", category: "Text" },
+                        { content: { innerText: "Jane Smith, CTO" }, id: createId(), name: "Author", styles: { fontWeight: "bold", fontSize: "0.9rem" }, type: "p", category: "Text" },
+                      ],
+                      id: createId(),
+                      name: "Review Card",
+                      styles: { ...defaultStyles, padding: "30px", backgroundColor: "white", borderRadius: "16px", border: "1px solid #eee", flex: "1", margin: "0 10px" },
+                      type: "container",
+                      category: "Container",
+                    },
+                  ],
+                  id: createId(),
+                  name: "Testimonials Grid",
+                  styles: { ...defaultStyles, display: "flex", width: "100%", justifyContent: "center" },
+                  type: "container",
+                  category: "Container",
+                }
+              ],
+              id: createId(),
+              name: "Testimonials Section",
+              styles: { ...defaultStyles, padding: "80px 20px", backgroundColor: "#fbfbfb", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" },
+              type: "container",
+              category: "Container",
+            },
+          },
+        });
+        break;
+      case "footer":
+        dispatch({
+          type: "ADD_ELEMENT",
+          payload: {
+            containerId: id,
+            elementDetails: {
+              content: [
+                {
+                  content: [
+                    {
+                      content: [
+                        { content: { innerText: "Framely" }, id: createId(), name: "Brand", styles: { fontWeight: "bold", fontSize: "1.2rem", marginBottom: "0.5rem" }, type: "span", category: "Text" },
+                        { content: { innerText: "The future of no-code." }, id: createId(), name: "Slogan", styles: { color: "#666", fontSize: "0.8rem" }, type: "p", category: "Text" },
+                      ],
+                      id: createId(),
+                      name: "Brand Info",
+                      styles: { ...defaultStyles, flex: "1" },
+                      type: "container",
+                      category: "Container",
+                    },
+                    {
+                      content: [
+                        { content: { innerText: "Product", href: "#" }, id: createId(), name: "Link", styles: { fontSize: "0.8rem", marginBottom: "0.5rem", display: "block" }, type: "link", category: "Link" },
+                        { content: { innerText: "Pricing", href: "#" }, id: createId(), name: "Link", styles: { fontSize: "0.8rem", marginBottom: "0.5rem", display: "block" }, type: "link", category: "Link" },
+                      ],
+                      id: createId(),
+                      name: "Links Group",
+                      styles: { ...defaultStyles, flex: "1" },
+                      type: "container",
+                      category: "Container",
+                    },
+                  ],
+                  id: createId(),
+                  name: "Footer Content",
+                  styles: { ...defaultStyles, display: "flex", width: "100%", maxWidth: "1200px" },
+                  type: "container",
+                  category: "Container",
+                },
+                {
+                  content: { innerText: "© 2026 Framely Inc. All rights reserved." },
+                  id: createId(),
+                  name: "Copyright",
+                  styles: { ...defaultStyles, borderTop: "1px solid #eee", paddingTop: "20px", marginTop: "40px", fontSize: "0.7rem", color: "#999", textAlign: "center", width: "100%" },
+                  type: "p",
+                  category: "Text",
+                }
+              ],
+              id: createId(),
+              name: "Footer",
+              styles: { ...defaultStyles, padding: "60px 20px", backgroundColor: "#fff", borderTop: "1px solid #eee", width: "100%" },
+              type: "container",
+              category: "Container",
+            },
+          },
+        });
+        break;
     }
   };
 

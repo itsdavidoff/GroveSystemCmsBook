@@ -19,6 +19,8 @@ export type ElementTypes =
   | "pricing"
   | "faq"
   | "contactForm"
+  | "testimonials"
+  | "footer"
   | "__body"
   | null;
 
