@@ -3,8 +3,8 @@
 import type React from "react";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "../../../components/ui/button";
+import { Input } from "../../../components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -12,13 +12,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
-import { createSite } from "@/lib/actions/page";
+} from "../../../components/ui/dialog";
+import { Separator } from "../../../components/ui/separator";
+import { createSite } from "../../../lib/actions/page";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createSiteSchema } from "@/lib/validations/page";
+import { createSiteSchema } from "../../../lib/validations/page";
 import {
   Form,
   FormControl,
@@ -26,7 +26,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "../../../components/ui/form";
 import * as z from "zod";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
