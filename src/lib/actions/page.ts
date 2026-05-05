@@ -52,7 +52,7 @@ export async function updateSite(siteId: string, data: Partial<Site>) {
   if (!userId) return { success: false, msg: "User not signed in" };
 
   try {
-    const site = await db.site.update({
+    const site = await (db as any).site.update({
       where: { id: siteId, userId: userId },
       data: {
         title: data.title,
@@ -87,7 +87,7 @@ export async function upsertPage({
   if (!userId) return { success: false, msg: "User not signed in" };
 
   try {
-    const page = await db.page.update({
+    const page = await (db as any).page.update({
       where: { id: id },
       data: {
         title: title,
@@ -113,7 +113,7 @@ export async function deleteSite(siteId: string) {
   if (!userId) return { success: false, msg: "User not signed in" };
 
   try {
-    const response = await db.site.delete({
+    const response = await (db as any).site.delete({
       where: {
         id: siteId,
         userId: userId,
@@ -133,7 +133,7 @@ export async function deleteSite(siteId: string) {
 
 export async function getPageDetails(pageId: string) {
   try {
-    const res = await db.page.findUnique({
+    const res = await (db as any).page.findUnique({
       where: { id: pageId },
       include: { site: true },
     });
@@ -162,7 +162,7 @@ export async function createPage({
   if (!userId) return { success: false, msg: "User not signed in" };
 
   try {
-    const page = await db.page.create({
+    const page = await (db as any).page.create({
       data: {
         siteId,
         title,
@@ -179,11 +179,46 @@ export async function createPage({
   }
 }
 
+export async function getSitePages(siteId: string) {
+  try {
+    const pages = await (db as any).page.findMany({
+      where: { siteId },
+      orderBy: { createdAt: "asc" },
+    });
+    return { success: true, pages };
+  } catch (error) {
+    return {
+      success: false,
+      msg: error instanceof Error ? error.message : "An unknown error occurred",
+    };
+  }
+}
+
+export async function deletePage(pageId: string) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, msg: "User not signed in" };
+
+  try {
+    const page = await (db as any).page.delete({
+      where: { id: pageId },
+      include: { site: true },
+    });
+
+    revalidateTag(page.site.subdomain);
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      msg: error instanceof Error ? error.message : "An unknown error occurred",
+    };
+  }
+}
+
 export const getSiteByDomain = async (subdomainName: string) => {
   try {
     const response = await unstable_cache(
       async () => {
-        const response = await db.site.findUnique({
+        const response = await (db as any).site.findUnique({
           where: {
             subdomain: subdomainName,
           },
