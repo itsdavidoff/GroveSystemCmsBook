@@ -15,9 +15,11 @@ import { Settings, Paintbrush } from "lucide-react";
 import Link from "next/link";
 
 const RightSidebar = () => {
-  const { state } = useEditor();
+  const { state, dispatch } = useEditor();
 
   if (state.editor.previewMode) return null;
+
+  const styles = state.editor.selectedElement.styles as any;
 
   return (
     <SidebarProvider open={state.editor.selectedElement.type !== null}>
@@ -60,16 +62,37 @@ const RightSidebar = () => {
                 <SidebarGroupLabel className="px-4 py-2">
                   CSS Editor
                 </SidebarGroupLabel>
-                <SidebarGroupContent className="p-4">
-                  Whoops, this feature hasn&apos;t been built yet. Come back
-                  later or{" "}
-                  <Link
-                    href="https://dub.sh/framely"
-                    className="text-blue-500 hover:underline"
-                  >
-                    build it yourself.
-                  </Link>{" "}
-                  ;)
+                <SidebarGroupContent className="p-4 flex flex-col gap-4">
+                  <div className="flex flex-col gap-2">
+                    <p className="text-xs text-muted-foreground">
+                      Custom CSS for the selected element
+                    </p>
+                    <textarea
+                      className="min-h-[300px] w-full p-3 font-mono text-xs bg-muted border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-ring"
+                      placeholder="/* Example: \ncolor: red;\nbackground-color: blue; \n*/"
+                      value={styles.cssText || ""}
+                      onChange={(e) => {
+                        const styleObject = {
+                          cssText: e.target.value,
+                        };
+                        dispatch({
+                          type: "UPDATE_ELEMENT",
+                          payload: {
+                            elementDetails: {
+                              ...state.editor.selectedElement,
+                              styles: {
+                                ...state.editor.selectedElement.styles,
+                                ...styleObject,
+                              },
+                            },
+                          },
+                        });
+                      }}
+                    />
+                  </div>
+                  <p className="text-[10px] text-muted-foreground italic">
+                    Note: Direct CSS properties will be applied to the current element.
+                  </p>
                 </SidebarGroupContent>
               </TabsContent>
             </SidebarGroup>

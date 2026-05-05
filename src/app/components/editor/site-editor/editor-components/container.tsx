@@ -17,11 +17,28 @@ function Container({ element }: Props) {
 
   const isSelected = state.editor.selectedElement.id === id;
 
+  // Extract custom CSS from styles
+  const { cssText, ...inlineStyles } = styles as any;
+  const customStyles: React.CSSProperties = { ...inlineStyles };
+
+  if (cssText) {
+    const lines = cssText.split(";");
+    lines.forEach((line: string) => {
+      const [prop, value] = line.split(":");
+      if (prop && value) {
+        const camelProp = prop
+          .trim()
+          .replace(/-([a-z])/g, (g: any) => g[1].toUpperCase());
+        (customStyles as any)[camelProp] = value.trim();
+      }
+    });
+  }
+
   const handleOnDrop = (e: React.DragEvent) => {
     e.stopPropagation();
     setIsDraggingOver(false);
     const componentType = e.dataTransfer.getData(
-      "componentType",
+      "componentType"
     ) as ElementTypes;
     switch (componentType) {
       case "h1":
@@ -232,13 +249,7 @@ function Container({ element }: Props) {
           },
         });
         break;
-      default:
     }
-  };
-
-  const handleDragStart = (e: React.DragEvent, type: string) => {
-    if (type === "__body") return;
-    e.dataTransfer.setData("componentType", type);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -251,6 +262,11 @@ function Container({ element }: Props) {
     e.preventDefault();
     e.stopPropagation();
     setIsDraggingOver(false);
+  };
+
+  const handleDragStart = (e: React.DragEvent, type: string) => {
+    if (type === "__body") return;
+    e.dataTransfer.setData("componentType", type);
   };
 
   const handleOnClickBody = (e: React.MouseEvent) => {
@@ -271,12 +287,12 @@ function Container({ element }: Props) {
     <div
       className={clsx("relative group my-1", {
         "max-w-full w-full":
-          (type === "container" || type === "2Col") && !styles?.width,
+          (type === "container" || type === "2Col" || type === "3Col") && !styles?.width,
         "h-fit": type === "container" && !styles?.height,
         "h-full": type === "__body",
         "!h-screen !m-0 !rounded-none":
           type === "__body" && state.editor.liveMode,
-        "flex flex-col md:!flex-row": type === "2Col",
+        "flex flex-col md:!flex-row": type === "2Col" || type === "3Col",
         "!w-[350px]": type === "__body" && state.editor.device === "Mobile",
         "!w-[800px]": type === "__body" && state.editor.device === "Tablet",
         "!w-full": type === "__body" && state.editor.device === "Desktop",
@@ -296,7 +312,7 @@ function Container({ element }: Props) {
         "outline-dashed outline-[1px] outline-slate-300":
           !state.editor.liveMode,
       })}
-      style={{ width: styles?.width, height: styles?.height }}
+      style={customStyles}
       onDrop={(e) => {
         handleOnDrop(e);
       }}
@@ -310,14 +326,14 @@ function Container({ element }: Props) {
           "absolute -top-[24px] -left-[1px] rounded-none rounded-t-lg hidden cursor-default bg-primary text-primary-foreground dark:bg-background dark:text-foreground",
           {
             block: isSelected && !state.editor.liveMode,
-          },
+          }
         )}
       >
         {name}
       </Badge>
 
       <div
-        style={{ ...styles, width: undefined, height: undefined }}
+        style={{ ...styles, width: undefined, height: undefined, cssText: undefined } as any}
         className="w-full h-full p-4"
       >
         {Array.isArray(content) &&
