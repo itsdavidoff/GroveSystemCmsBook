@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { defaultStyles } from "@/lib/constants";
 import clsx from "clsx";
 import { Trash, Copy } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 type Props = {
   element: EditorElement;
@@ -13,7 +13,12 @@ type Props = {
 
 function ElementWrapper({ element, children, className }: Props) {
   const { state, dispatch } = useEditor();
+  const [mounted, setMounted] = useState(false);
   const isSelected = state.editor.selectedElement.id === element.id;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleDeleteElement = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -56,7 +61,7 @@ function ElementWrapper({ element, children, className }: Props) {
       })}
       onClick={handleOnClickBody}
     >
-      {isSelected && !state.editor.liveMode && (
+      {mounted && isSelected && !state.editor.liveMode && (
         <Badge
           className={clsx(
             "absolute -top-[24px] -left-[1px] rounded-none rounded-t-lg bg-primary text-primary-foreground dark:bg-background dark:text-foreground",
@@ -69,7 +74,8 @@ function ElementWrapper({ element, children, className }: Props) {
 
       <div className="overflow-hidden">{children}</div>
 
-      {isSelected &&
+      {mounted &&
+        isSelected &&
         !state.editor.liveMode &&
         state.editor.selectedElement.type !== "__body" && (
           <div className="absolute flex gap-1 -top-[26px] -right-[1px] z-[10]">
