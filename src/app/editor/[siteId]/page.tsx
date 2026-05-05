@@ -18,22 +18,23 @@ type Props = {
 const Page = async ({ params }: Props) => {
   const session = await auth();
 
-  const { siteId } = await params;
-  const siteDetails = await db.page.findFirst({
+  const { siteId: pageId } = await params;
+  const pageDetails = await (db as any).page.findFirst({
     where: {
-      id: siteId,
+      id: pageId,
     },
+    include: { site: true },
   });
 
   // TODO: Display access denied page, add ability for users to request access (?)
-  if (!siteDetails || !(session.userId === siteDetails.userId)) {
+  if (!pageDetails || !(session.userId === pageDetails.site.userId)) {
     return <RedirectToSignIn />;
   }
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
-      <EditorProvider siteId={siteId} siteDetails={siteDetails}>
-        <EditorNavigation siteDetails={siteDetails} />
+      <EditorProvider siteId={pageDetails.siteId} siteDetails={pageDetails as any}>
+        <EditorNavigation siteDetails={pageDetails.site as any} />
         <div className="relative flex w-full h-full">
           <div className="flex-shrink-0 relative bg-muted">
             <SidebarProvider>
@@ -42,7 +43,7 @@ const Page = async ({ params }: Props) => {
             </SidebarProvider>
           </div>
           <div className="flex-1 p-0 m-0">
-            <SiteEditor siteId={siteId} />
+            <SiteEditor siteId={pageId} />
           </div>
           <div className="flex-shrink-0">
             <RightSidebar />
