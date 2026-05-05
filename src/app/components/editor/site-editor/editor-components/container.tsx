@@ -35,6 +35,7 @@ function Container({ element }: Props) {
   }
 
   const handleOnDrop = (e: React.DragEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     setIsDraggingOver(false);
     const componentType = e.dataTransfer.getData(
@@ -710,6 +711,7 @@ function Container({ element }: Props) {
 
   return (
     <div
+      draggable={type !== "__body"}
       className={clsx("relative group my-1", {
         "max-w-full w-full":
           (type === "container" || type === "2Col" || type === "3Col") && !styles?.width,
@@ -743,7 +745,7 @@ function Container({ element }: Props) {
       }}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
-      onDragStart={(e) => handleDragStart(e, "container")}
+      onDragStart={(e) => handleDragStart(e, type as string)}
       onClick={handleOnClickBody}
     >
       <Badge
