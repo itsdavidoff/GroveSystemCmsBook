@@ -80,7 +80,8 @@ function SiteEditor({ siteId, liveMode }: Props) {
         const response = await upsertSite({
           id: siteId,
           content: JSON.stringify(debouncedEditorState),
-        });
+          designTokens: JSON.stringify(state.editor.designTokens),
+        } as any);
         
         if (response.success) {
           toast.success("Saved", { 
@@ -109,7 +110,8 @@ function SiteEditor({ siteId, liveMode }: Props) {
         payload: {
           elements: response.content ? JSON.parse(response?.content) : "",
           withLive: !!liveMode,
-        },
+          designTokens: (response as any).designTokens ? JSON.parse((response as any).designTokens) : undefined,
+        } as any,
       });
     };
     fetchData();

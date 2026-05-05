@@ -32,6 +32,10 @@ export type Editor = {
   elements: EditorElement[];
   selectedElement: EditorElement;
   device: DeviceTypes;
+  designTokens: {
+    fonts: { primary: string; secondary: string };
+    colors: { primary: string; secondary: string };
+  };
 };
 
 export type HistoryState = {
@@ -68,6 +72,10 @@ const initialEditorState: EditorState["editor"] = {
   liveMode: false,
   visible: false,
   siteId: "",
+  designTokens: {
+    fonts: { primary: "Inter, sans-serif", secondary: "Inter, sans-serif" },
+    colors: { primary: "#000000", secondary: "#666666" },
+  },
 };
 
 const initialHistoryState: HistoryState = {
@@ -402,6 +410,36 @@ const editorReducer = (
       }
       return state;
 
+    case "SET_DESIGN_TOKENS":
+      const updatedEditorStateWithTokens = {
+        ...state.editor,
+        designTokens: {
+          fonts: {
+            ...state.editor.designTokens.fonts,
+            ...action.payload.fonts,
+          },
+          colors: {
+            ...state.editor.designTokens.colors,
+            ...action.payload.colors,
+          },
+        },
+      };
+
+      const updatedHistoryWithTokens = [
+        ...state.history.history.slice(0, state.history.currentIndex + 1),
+        { ...updatedEditorStateWithTokens },
+      ];
+
+      return {
+        ...state,
+        editor: updatedEditorStateWithTokens,
+        history: {
+          ...state.history,
+          history: updatedHistoryWithTokens,
+          currentIndex: updatedHistoryWithTokens.length - 1,
+        },
+      };
+
     case "LOAD_DATA":
       return {
         ...initialState,
@@ -409,6 +447,7 @@ const editorReducer = (
           ...initialState.editor,
           elements: action.payload.elements || initialEditorState.elements,
           liveMode: !!action.payload.withLive,
+          designTokens: (action.payload as any).designTokens || initialEditorState.designTokens,
         },
       };
 

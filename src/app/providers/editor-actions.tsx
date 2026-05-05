@@ -53,6 +53,13 @@ export type EditorAction =
   | { type: "UNDO" }
   | { type: "REDO" }
   | {
+      type: "SET_DESIGN_TOKENS";
+      payload: {
+        fonts?: { primary?: string; secondary?: string };
+        colors?: { primary?: string; secondary?: string };
+      };
+    }
+  | {
       type: "LOAD_DATA";
       payload: { elements: EditorElement[]; withLive: boolean };
     }
