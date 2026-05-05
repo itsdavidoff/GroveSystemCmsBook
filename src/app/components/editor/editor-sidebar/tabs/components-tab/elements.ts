@@ -128,4 +128,11 @@ export const elements: {
     category: "Basic",
     icon: SquareDashed,
   },
+  {
+    label: "Pricing Section",
+    id: "pricing",
+    group: "element",
+    category: "Basic",
+    icon: SquareDashed,
+  },
 ];

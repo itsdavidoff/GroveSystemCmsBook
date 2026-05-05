@@ -372,6 +372,66 @@ function Container({ element }: Props) {
           },
         });
         break;
+      case "pricing":
+        dispatch({
+          type: "ADD_ELEMENT",
+          payload: {
+            containerId: id,
+            elementDetails: {
+              content: [
+                {
+                  content: { innerText: "Simple Pricing" },
+                  id: createId(),
+                  name: "Title",
+                  styles: { ...defaultStyles, fontSize: "2.5rem", fontWeight: "bold", marginBottom: "3rem", textAlign: "center", width: "100%" },
+                  type: "h2",
+                  category: "Text",
+                },
+                {
+                  content: [
+                    // Tier 1
+                    {
+                      content: [
+                        { content: { innerText: "Basic" }, id: createId(), name: "Tier", styles: { fontWeight: "bold" }, type: "span", category: "Text" },
+                        { content: { innerText: "$9/mo" }, id: createId(), name: "Price", styles: { fontSize: "2rem", fontWeight: "800", margin: "10px 0" }, type: "h3", category: "Text" },
+                        { content: { innerText: "Best for individuals" }, id: createId(), name: "Desc", styles: { color: "#666", fontSize: "0.9rem" }, type: "p", category: "Text" },
+                      ],
+                      id: createId(),
+                      name: "Card",
+                      styles: { ...defaultStyles, padding: "30px", border: "1px solid #eee", borderRadius: "12px", flex: "1", margin: "0 10px", backgroundColor: "white" },
+                      type: "container",
+                      category: "Container",
+                    },
+                    // Tier 2
+                    {
+                      content: [
+                        { content: { innerText: "Pro" }, id: createId(), name: "Tier", styles: { fontWeight: "bold", color: "white" }, type: "span", category: "Text" },
+                        { content: { innerText: "$29/mo" }, id: createId(), name: "Price", styles: { fontSize: "2rem", fontWeight: "800", margin: "10px 0", color: "white" }, type: "h3", category: "Text" },
+                        { content: { innerText: "Best for teams" }, id: createId(), name: "Desc", styles: { color: "#ccc", fontSize: "0.9rem" }, type: "p", category: "Text" },
+                      ],
+                      id: createId(),
+                      name: "Card Pro",
+                      styles: { ...defaultStyles, padding: "30px", border: "1px solid #000", borderRadius: "12px", flex: "1", margin: "0 10px", backgroundColor: "black", color: "white" },
+                      type: "container",
+                      category: "Container",
+                    },
+                  ],
+                  id: createId(),
+                  name: "Pricing Grid",
+                  styles: { ...defaultStyles, display: "flex", justifyContent: "center", width: "100%" },
+                  type: "container",
+                  category: "Container",
+                }
+              ],
+              id: createId(),
+              name: "Pricing Section",
+              styles: { ...defaultStyles, padding: "80px 20px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center" },
+              type: "container",
+              category: "Container",
+            },
+          },
+        });
+        break;
     }
   };
 
