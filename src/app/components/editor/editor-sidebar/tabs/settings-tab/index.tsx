@@ -13,6 +13,7 @@ import AppearanceSettings from "./appearance-settings";
 import { Textarea } from "@/components/ui/textarea";
 import TransformSettings from "./transform-settings";
 import StrokeSettings from "./stroke-settings";
+import ThemeSettings from "./theme-settings";
 import { ImageUpload } from "./image-upload";
 import { categoriesWithCustomSettings } from "@/lib/constants";
 
@@ -79,26 +80,28 @@ const SettingsTab = () => {
   };
 
   return (
-    <Accordion
-      type="multiple"
-      className="w-full"
-      defaultValue={[
-        "Custom",
-        "Transform",
-        "Appearance",
-        "Typography",
-        "Stroke",
-      ]}
-    >
-      <AccordionItem
-        value="Custom"
-        className="px-2 py-0"
-        hidden={
-          !categoriesWithCustomSettings.includes(
-            state.editor.selectedElement.category,
-          )
-        }
+      <Accordion
+        type="multiple"
+        className="w-full"
+        defaultValue={[
+          "Theme",
+          "Custom",
+          "Transform",
+          "Appearance",
+          "Typography",
+          "Stroke",
+        ]}
       >
+        <ThemeSettings />
+        <AccordionItem
+          value="Custom"
+          className="px-2 py-0"
+          hidden={
+            !categoriesWithCustomSettings.includes(
+              state.editor.selectedElement.category
+            )
+          }
+        >
         <AccordionTrigger className="!no-underline capitalize">
           {state.editor.selectedElement.category === "Text"
             ? "Text"
