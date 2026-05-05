@@ -27,6 +27,18 @@ export type EditorAction =
       };
     }
   | {
+      type: "MOVE_ELEMENT_UP";
+      payload: {
+        elementId: string;
+      };
+    }
+  | {
+      type: "MOVE_ELEMENT_DOWN";
+      payload: {
+        elementId: string;
+      };
+    }
+  | {
       type: "CHANGE_SELECTED_ELEMENT";
       payload: {
         elementDetails?:

@@ -190,6 +190,40 @@ const duplicateElement = (
   return newEditorArray;
 };
 
+const reorderElements = (
+  editorArray: EditorElement[],
+  elementId: string,
+  direction: "UP" | "DOWN"
+): EditorElement[] => {
+  const index = editorArray.findIndex((item) => item.id === elementId);
+
+  if (index !== -1) {
+    const newArray = [...editorArray];
+    if (direction === "UP" && index > 0) {
+      [newArray[index], newArray[index - 1]] = [
+        newArray[index - 1],
+        newArray[index],
+      ];
+    } else if (direction === "DOWN" && index < newArray.length - 1) {
+      [newArray[index], newArray[index + 1]] = [
+        newArray[index + 1],
+        newArray[index],
+      ];
+    }
+    return newArray;
+  }
+
+  return editorArray.map((item) => {
+    if (item.content && Array.isArray(item.content)) {
+      return {
+        ...item,
+        content: reorderElements(item.content, elementId, direction),
+      };
+    }
+    return item;
+  });
+};
+
 const editorReducer = (
   state: EditorState = initialState,
   action: EditorAction
@@ -311,6 +345,35 @@ const editorReducer = (
           ...state.history,
           history: updatedHistoryAfterDuplicate,
           currentIndex: updatedHistoryAfterDuplicate.length - 1,
+        },
+      };
+
+    case "MOVE_ELEMENT_UP":
+    case "MOVE_ELEMENT_DOWN":
+      const direction = action.type === "MOVE_ELEMENT_UP" ? "UP" : "DOWN";
+      const reorderedElements = reorderElements(
+        state.editor.elements,
+        action.payload.elementId,
+        direction
+      );
+
+      const reorderedEditorState = {
+        ...state.editor,
+        elements: reorderedElements,
+      };
+
+      const updatedHistoryAfterReorder = [
+        ...state.history.history.slice(0, state.history.currentIndex + 1),
+        { ...reorderedEditorState },
+      ];
+
+      return {
+        ...state,
+        editor: reorderedEditorState,
+        history: {
+          ...state.history,
+          history: updatedHistoryAfterReorder,
+          currentIndex: updatedHistoryAfterReorder.length - 1,
         },
       };
 
