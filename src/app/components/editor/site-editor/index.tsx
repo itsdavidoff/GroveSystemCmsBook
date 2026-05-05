@@ -83,12 +83,7 @@ function SiteEditor({ siteId, liveMode }: Props) {
           designTokens: JSON.stringify(state.editor.designTokens),
         } as any);
         
-        if (response.success) {
-          toast.success("Saved", { 
-            description: "Changes saved automatically",
-            duration: 1000 
-          });
-        }
+        // Removed toast notification for better UX
       } catch (error) {
         console.error("Auto-save failed", error);
       }
