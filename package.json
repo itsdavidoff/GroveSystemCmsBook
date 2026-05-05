@@ -16,7 +16,7 @@
     "@clerk/themes": "^2.2.18",
     "@hookform/resolvers": "^4.1.0",
     "@paralleldrive/cuid2": "^2.2.2",
-    "@prisma/client": "^6.0.0",
+    "@prisma/client": "5.22.0",
     "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-aspect-ratio": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.6",
@@ -46,7 +46,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "prisma": "^6.0.0",
+    "prisma": "5.22.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
