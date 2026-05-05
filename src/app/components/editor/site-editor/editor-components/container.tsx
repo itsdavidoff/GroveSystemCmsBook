@@ -759,8 +759,12 @@ function Container({ element }: Props) {
 
       <div
         style={{ ...styles, width: undefined, height: undefined, cssText: undefined } as any}
-        className="w-full h-full p-4"
+        onDragLeave={handleDragLeave}
+        onDrop={handleOnDrop}
       >
+        {isDraggingOver && (
+          <div className="absolute inset-x-0 top-0 h-1 bg-blue-500 z-50 animate-pulse pointer-events-none" />
+        )}
         {Array.isArray(content) &&
           content.map((childElement) => (
             <Recursive key={childElement.id} element={childElement} />
