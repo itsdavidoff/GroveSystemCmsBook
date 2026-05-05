@@ -3,7 +3,16 @@ import { NextResponse } from "next/server";
 import { getLink } from "./lib/getLink";
 
 export const config = {
-  matcher: ["/((?!api/|_next/|_static/|_vercel|[\\w-]+\\.\\w+).*)"],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)",
+  ],
 };
 
 export default clerkMiddleware(async (auth, req) => {
@@ -22,7 +31,10 @@ export default clerkMiddleware(async (auth, req) => {
     path.startsWith("/api") ||
     path.startsWith("/_next") ||
     path.startsWith("/_static") ||
-    path.startsWith("/_vercel")
+    path.startsWith("/_vercel") ||
+    path.includes("sign-in") ||
+    path.includes("sign-up") ||
+    path.includes("clerk")
   ) {
     return NextResponse.next();
   }
