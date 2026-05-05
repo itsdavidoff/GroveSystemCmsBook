@@ -38,6 +38,31 @@ export async function createSite({ title, subdomain }: SiteProps) {
 
 type UpsertProps = Partial<Page>;
 
+export async function updateSite(siteId: string, data: Partial<Page>) {
+  const { userId } = await auth();
+  if (!userId) return { success: false, msg: "User not signed in" };
+
+  try {
+    const site = await db.page.update({
+      where: { id: siteId, userId: userId },
+      data: {
+        title: data.title,
+        subdomain: data.subdomain,
+        previewImage: data.previewImage,
+        visible: data.visible,
+      },
+    });
+
+    revalidateTag(site.subdomain);
+    return { success: true, site };
+  } catch (error) {
+    return {
+      success: false,
+      msg: error instanceof Error ? error.message : "An unknown error occurred",
+    };
+  }
+}
+
 export async function upsertSite({
   id,
   title,
@@ -50,21 +75,27 @@ export async function upsertSite({
 
   if (!userId) return { success: false, msg: "User not signed in" };
 
-  const site = await db.page.update({
-    where: { id: id, userId: userId },
-    data: {
-      id: id,
-      title: title,
-      subdomain: subdomain,
-      previewImage: previewImage,
-      content: content,
-      visible: visible,
-    },
-  });
+  try {
+    const site = await db.page.update({
+      where: { id: id, userId: userId },
+      data: {
+        title: title,
+        subdomain: subdomain,
+        previewImage: previewImage,
+        content: content,
+        visible: visible,
+      },
+    });
 
-  revalidateTag(site.subdomain);
+    revalidateTag(site.subdomain);
 
-  return { success: true, site: site };
+    return { success: true, site: site };
+  } catch (error) {
+    return {
+      success: false,
+      msg: error instanceof Error ? error.message : "An unknown error occurred",
+    };
+  }
 }
 
 export async function deleteSite(siteId: string) {

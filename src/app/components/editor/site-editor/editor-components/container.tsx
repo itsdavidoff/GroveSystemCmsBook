@@ -249,6 +249,129 @@ function Container({ element }: Props) {
           },
         });
         break;
+      case "navbar":
+        dispatch({
+          type: "ADD_ELEMENT",
+          payload: {
+            containerId: id,
+            elementDetails: {
+              content: [
+                {
+                  content: { innerText: "Logo" },
+                  id: createId(),
+                  name: "Logo",
+                  styles: { ...defaultStyles, fontWeight: "bold", fontSize: "1.2rem" },
+                  type: "span",
+                  category: "Text",
+                },
+                {
+                  content: [
+                    {
+                      content: { innerText: "Home", href: "#" },
+                      id: createId(),
+                      name: "Nav Link",
+                      styles: { ...defaultStyles, padding: "0 10px" },
+                      type: "link",
+                      category: "Link",
+                    },
+                    {
+                      content: { innerText: "About", href: "#" },
+                      id: createId(),
+                      name: "Nav Link",
+                      styles: { ...defaultStyles, padding: "0 10px" },
+                      type: "link",
+                      category: "Link",
+                    },
+                    {
+                      content: { innerText: "Contact", href: "#" },
+                      id: createId(),
+                      name: "Nav Link",
+                      styles: { ...defaultStyles, padding: "0 10px" },
+                      type: "link",
+                      category: "Link",
+                    },
+                  ],
+                  id: createId(),
+                  name: "Nav Links",
+                  styles: { ...defaultStyles, display: "flex", marginLeft: "auto" },
+                  type: "container",
+                  category: "Container",
+                },
+              ],
+              id: createId(),
+              name: "Navbar",
+              styles: {
+                ...defaultStyles,
+                display: "flex",
+                alignItems: "center",
+                padding: "20px",
+                width: "100%",
+                backgroundColor: "white",
+                borderBottom: "1px solid #eaeaea",
+              },
+              type: "navbar",
+              category: "Container",
+            },
+          },
+        });
+        break;
+      case "hero":
+        dispatch({
+          type: "ADD_ELEMENT",
+          payload: {
+            containerId: id,
+            elementDetails: {
+              content: [
+                {
+                  content: { innerText: "Amazing Hero Title" },
+                  id: createId(),
+                  name: "Hero Title",
+                  styles: { ...defaultStyles, fontSize: "3rem", fontWeight: "800", marginBottom: "1rem", textAlign: "center" },
+                  type: "h1",
+                  category: "Text",
+                },
+                {
+                  content: { innerText: "Build your dream website with our powerful drag-and-drop editor." },
+                  id: createId(),
+                  name: "Hero Subtitle",
+                  styles: { ...defaultStyles, fontSize: "1.2rem", color: "#666", marginBottom: "2rem", textAlign: "center" },
+                  type: "p",
+                  category: "Text",
+                },
+                {
+                  content: { innerText: "Get Started", href: "#" },
+                  id: createId(),
+                  name: "CTA Button",
+                  styles: { 
+                    ...defaultStyles, 
+                    backgroundColor: "black", 
+                    color: "white", 
+                    padding: "12px 24px", 
+                    borderRadius: "8px",
+                    display: "inline-block"
+                  },
+                  type: "link",
+                  category: "Link",
+                },
+              ],
+              id: createId(),
+              name: "Hero Section",
+              styles: {
+                ...defaultStyles,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "80px 20px",
+                width: "100%",
+                backgroundColor: "#f9f9f9",
+              },
+              type: "hero",
+              category: "Container",
+            },
+          },
+        });
+        break;
     }
   };
 

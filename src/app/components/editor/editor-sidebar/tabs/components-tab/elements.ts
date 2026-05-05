@@ -114,4 +114,18 @@ export const elements: {
     category: "Basic",
     icon: Link,
   },
+  {
+    label: "Navbar",
+    id: "navbar",
+    group: "element",
+    category: "Basic",
+    icon: SquareDashed,
+  },
+  {
+    label: "Hero Section",
+    id: "hero",
+    group: "element",
+    category: "Basic",
+    icon: SquareDashed,
+  },
 ];

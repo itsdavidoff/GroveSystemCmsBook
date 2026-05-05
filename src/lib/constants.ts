@@ -14,6 +14,8 @@ export type ElementTypes =
   | "3Col"
   | "video"
   | "image"
+  | "navbar"
+  | "hero"
   | "__body"
   | null;
 
