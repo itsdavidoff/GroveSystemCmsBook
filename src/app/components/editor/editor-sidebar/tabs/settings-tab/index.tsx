@@ -13,6 +13,7 @@ import AppearanceSettings from "./appearance-settings";
 import { Textarea } from "@/components/ui/textarea";
 import TransformSettings from "./transform-settings";
 import StrokeSettings from "./stroke-settings";
+import { ImageUpload } from "./image-upload";
 import { categoriesWithCustomSettings } from "@/lib/constants";
 
 const SettingsTab = () => {
@@ -137,17 +138,27 @@ const SettingsTab = () => {
                 switch (state.editor.selectedElement.type) {
                   case "image":
                     return (
-                      <div className="grid grid-rows-2 gap-2">
+                      <div className="grid grid-rows-2 gap-4">
                         <div className="flex flex-col gap-2">
-                          <p className="text-muted-foreground">Image Url</p>
-                          <Input
+                          <p className="text-muted-foreground">Image</p>
+                          <ImageUpload
                             id="imageUrl"
-                            placeholder="Enter Url..."
-                            onChange={handleCustomValuesChange}
-                            value={
-                              state.editor.selectedElement.content.imageUrl
-                            }
+                            onUpload={(url: string) => {
+                              const e = { target: { id: "imageUrl", value: url } };
+                              handleCustomValuesChange(e);
+                            }}
                           />
+                          <div className="flex flex-col gap-2 mt-2">
+                            <p className="text-[10px] text-muted-foreground uppercase font-bold">Or paste URL</p>
+                            <Input
+                              id="imageUrl"
+                              placeholder="https://..."
+                              onChange={handleCustomValuesChange}
+                              value={
+                                state.editor.selectedElement.content.imageUrl
+                              }
+                            />
+                          </div>
                         </div>
                         <div className="flex flex-col gap-2">
                           <p className="text-muted-foreground">Alt Text</p>
