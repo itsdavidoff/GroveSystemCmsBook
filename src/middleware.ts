@@ -15,15 +15,19 @@ export default clerkMiddleware(async (auth, req) => {
   // Get the pathname of the request (e.g. /, /about, /blog/first-post)
   const path = url.pathname;
 
-  // Handle editor subdomain
+  // IMPORTANT: Skip subdomain logic for reserved internal paths
   if (
-    hostname === getLink({ subdomain: "editor", method: false }).slice(0, -1)
+    path.startsWith("/editor") ||
+    path.startsWith("/dashboard") ||
+    path.startsWith("/api") ||
+    path.startsWith("/_next") ||
+    path.startsWith("/_static") ||
+    path.startsWith("/_vercel")
   ) {
-    await auth.protect();
-    return NextResponse.rewrite(
-      new URL(`/editor${path === "/" ? "" : path}`, req.url),
-    );
+    return NextResponse.next();
   }
+
+  const searchParams = url.searchParams.toString();
 
   // Only allow app.framely.site for dashboard page, sounds better, more concise
   if (hostname === getLink({ subdomain: "app", method: false }).slice(0, -1)) {
