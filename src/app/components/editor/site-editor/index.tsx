@@ -90,7 +90,7 @@ function SiteEditor({ siteId, liveMode }: Props) {
     };
 
     handleAutoSave();
-  }, [debouncedEditorState, siteId, liveMode, state.editor.previewMode]);
+  }, [debouncedEditorState, siteId, liveMode, state.editor.previewMode, state.editor.designTokens]);
 
   useEffect(() => {
     const fetchData = async () => {
