@@ -37,6 +37,8 @@ import {
 } from "lucide-react";
 import { useTheme } from "next-themes";
 
+import Link from "next/link";
+
 const items = [
   { title: "Overview", url: "/dashboard", icon: LayoutDashboard },
   { title: "Sites", url: "/dashboard", icon: Globe },
@@ -98,10 +100,10 @@ const AppSidebar = () => {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
